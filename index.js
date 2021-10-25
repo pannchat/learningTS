@@ -27,3 +27,10 @@ var name1 = 'kim';
 var age = 25;
 var friend = null; //undefined, null 타입도 있음.
 var arr = [123, 456];
+var member = 'kim';
+var members = [1, '2', 3];
+var obj = { a: '123' };
+var 이름;
+console.log(이름 - 1);
+var 나이;
+나이 + 1;
