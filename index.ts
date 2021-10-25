@@ -31,19 +31,19 @@
 //     }
 // }
 
-let name1 :string = 'kim'
-let age :number = 25;
-let friend :null = null; //undefined, null 타입도 있음.
+// let name1 :string = 'kim'
+// let age :number = 25;
+// let friend :null = null; //undefined, null 타입도 있음.
 
-let arr : number[] = [123,456];
+// let arr : number[] = [123,456];
 
-let member : number | string = 'kim';
-type MemberType = string |number
-let members : (string|number)[] = [1,'2',3];
-let obj :{a:string|number} = {a:'123'}
+// let member : number | string = 'kim';
+// type MemberType = string |number
+// let members : (string|number)[] = [1,'2',3];
+// let obj :{a:string|number} = {a:'123'}
 
-let 이름 : any;
-console.log(이름 - 1);
+// let 이름 : any;
+// console.log(이름 - 1);
 
 // let 나이 :string|number;
 // 나이 + 1;
