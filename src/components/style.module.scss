@@ -1,0 +1,17 @@
+#sort-select {
+  display: flex;
+  justify-content: end;
+  margin: 10px 0;
+}
+
+.grab {
+  cursor: grabbing;
+}
+.move-up {
+  color: red;
+  transform: translate(0, -10px);
+}
+
+.move-down {
+  transform: translate(0, 10px);
+}

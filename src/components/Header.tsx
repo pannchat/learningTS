@@ -8,13 +8,13 @@ interface todoProps {
 //     count: number
 // }
 const HeadCotainer = styled.div`
-background-color:#e9ecef;
-border:solid 1px #ced4da;
-padding:10px;
-border-radius:10px 10px 0 0;
-color:#1098ad;
-font-size:20pt;
-font-weight:bold;
+    background-color:#e9ecef;
+    border:solid 1px #ced4da;
+    padding:10px;
+    border-radius:10px 10px 0 0;
+    color:#1098ad;
+    font-size:20pt;
+    font-weight:bold;
 `;
 const Total = styled.div`
     display:flex;
@@ -25,9 +25,6 @@ const Total = styled.div`
 `;
 class Header extends React.Component<todoProps> {
 
-    componentDidMount() {
-
-    }
     render() {
         return (
             <>
