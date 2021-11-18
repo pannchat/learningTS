@@ -1,6 +1,7 @@
 import React,{PureComponent} from 'react';
 import styled from 'styled-components'
-import { HiBadgeCheck, HiOutlineBadgeCheck, HiTrash } from 'react-icons/hi'
+import { HiBadgeCheck, HiOutlineBadgeCheck, HiTrash,HiPencil, HiXCircle } from 'react-icons/hi'
+
 import TodoListTooltip from './TodoListTooltip'
 import styles from './style.module.scss'
 
@@ -12,7 +13,7 @@ const RemoveBtn = styled.div`
     }
 `;
 
-const CheckBtn = styled.div`
+const Button = styled.div`
     opacity:0.5;
     &:hover{
         cursor:pointer;
@@ -45,7 +46,9 @@ const Todolist = styled.div`
     white-space: nowrap;
     
 `;
-
+const Input = styled.input`
+    width:100%;
+`;
 interface ItemProps {
     todoItem: {
         id: string,
@@ -54,17 +57,21 @@ interface ItemProps {
     },
     onToggle(id: string): void,
     onRemove(id: string): void,
-    onSwapItem(start: string, end: string): void
+    onSwapItem(start: string, end: string): void,
+    handleItemUpdate(todo:object): void,
 }
-
-class TodoListItem extends React.Component<ItemProps> {
+interface ItemState{
+    editMode : boolean,
+    editText : string
+}
+class TodoListItem extends React.Component<ItemProps, ItemState> {
     // shouldComponentUpdate(prevProps:ItemProps){
     //     if (prevProps.todoItem.check === this.props.todoItem.check) return false;
     //     return true;
     // }
-
-    componentDidUpdate(){
-        console.log(this.props)
+    state={
+        editMode:false,
+        editText : this.props.todoItem.title,
     }
     handleItemDragStart = (e: React.DragEvent<HTMLDivElement>) => {
         e.dataTransfer.setData('dragItemId', this.props.todoItem.id.toString());
@@ -79,8 +86,37 @@ class TodoListItem extends React.Component<ItemProps> {
     handleClickRemoveButton = () =>{
         this.props.onRemove(this.props.todoItem.id)
     }
+    handleChangeEditInput = (targetValue:string) =>{
+        this.setState({
+            editText:targetValue
+        })
+    }
+    handleClickUpdate = () => {
+        const {id,check} = this.props.todoItem;
+        const editTodoItem = {id:id, title:this.state.editText, check:check}
+        this.props.handleItemUpdate(editTodoItem)
+        this.setState({
+            editMode : false,
+        })
+        // this.props.handleItemUpdate();
+    }
+    handleTodoDoubleClick = () => {
+        this.setState({editMode:true});
+        if(this.editInput.current) this.editInput.current.focus()
+    }
+    handleClickCancelButton = () => {
+        this.setState({
+            editMode:false,
+            editText: this.props.todoItem.title
+        })
+    }
+    handleEditInputKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key == "Enter" && this.state.editText) {
+            this.handleClickUpdate();
+        }
+    }
+    editInput = React.createRef<HTMLInputElement>();
     render() {
-        console.log('test11 render item')
         
         return (
             <>
@@ -95,13 +131,33 @@ class TodoListItem extends React.Component<ItemProps> {
                     }}
                     draggable
                 >
-                    <TodoListTooltip TooltipContent={this.props.todoItem.title}>
-                        <Todolist>
-                                {this.props.todoItem.title}
-                        </Todolist>
-                    </TodoListTooltip>
-                    <ButtonContainer>
-                        <CheckBtn>
+                    {this.state.editMode
+                        ?(
+                        <>
+                            <Input value={this.state.editText}
+                                ref={this.editInput}
+                                onChange={(e)=>this.handleChangeEditInput(e.target.value)}
+                                onKeyUp={this.handleEditInputKeyUp}
+                                >   
+                            </Input>
+                            <ButtonContainer>
+                                <Button>
+                                    <HiPencil size={30} onClick={this.handleClickUpdate}/>
+                                </Button> 
+                                <Button>
+                                    <HiXCircle size={30} onClick={this.handleClickCancelButton}/>
+                                </Button>    
+                            </ButtonContainer>
+                        </>
+                        )
+                        :(<>
+                        <TodoListTooltip TooltipContent={this.props.todoItem.title}>
+                            <Todolist onDoubleClick={this.handleTodoDoubleClick}>
+                                    {this.props.todoItem.title}
+                            </Todolist>
+                        </TodoListTooltip>
+                        <ButtonContainer>
+                        <Button>
                             {this.props.todoItem.check
                                 ? <HiBadgeCheck 
                                     size={30} 
@@ -112,11 +168,16 @@ class TodoListItem extends React.Component<ItemProps> {
                                     onClick={this.handleClickToggleButton} 
                                 />
                             }
-                        </CheckBtn>
+                        </Button>
                         <RemoveBtn onClick={this.handleClickRemoveButton}>
                             <HiTrash size={30} />
                         </RemoveBtn>
                     </ButtonContainer>
+                    </>)
+                    }
+                    
+                   
+
                 </ItemContainer>
             </>
         )

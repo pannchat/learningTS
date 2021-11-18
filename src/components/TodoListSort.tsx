@@ -4,13 +4,8 @@ interface TodoProps{
     onChangeSelect(typeValue:string) :void ,
 }
 
-
 class TodoListSort extends React.Component<TodoProps>{
-    componentDidUpdate(){
-        console.log(
-            this.props
-        )
-    }
+
 
     render(){
         const {onChangeSelect} = this.props;

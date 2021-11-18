@@ -57,13 +57,11 @@ class TodoListTooltip extends React.Component<ItemProps,ItemState>{
         this.setState({
             onMouseCheck:true,
         })
-        console.log("onmouseover")
     }
     handleMouseOut = () => {
         this.setState({
             onMouseCheck:false,
         })
-        console.log("onmouseout")
     }
     handleDragOver = () => {
         this.setState({

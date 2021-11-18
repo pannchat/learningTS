@@ -12,7 +12,9 @@ interface ItemProps {
     }[],
     onToggle(id: string): void,
     onRemove(id: string): void,
-    onSwapItem(start: string, end: string): void
+    onSwapItem(start: string, end: string): void,
+    handleItemUpdate(todo:object): void
+    
 }
 
 const EmptyTodolist = styled.div`
@@ -28,10 +30,14 @@ const TodoListContainer = styled.div`
     width:100%;
     max-width: 500px;
 `;
-class TodoList extends PureComponent<ItemProps>{
-    componentDidUpdate(){
-        console.log("Update")
-    }
+class TodoList extends React.Component<ItemProps>{
+    // componentDidUpdate(){
+    //     console.log("Update")
+    // }
+    // shouldComponentUpdate(prevProps:ItemProps){
+    //     if (prevProps.todolist === this.props.todolist) return false;
+    //     return true;
+    // }
     render() {
         
         return (
@@ -43,6 +49,7 @@ class TodoList extends PureComponent<ItemProps>{
                         onToggle={this.props.onToggle}
                         onRemove={this.props.onRemove}
                         onSwapItem={this.props.onSwapItem}
+                        handleItemUpdate={this.props.handleItemUpdate}
                     />
                 ))
                 : (<EmptyTodolist>

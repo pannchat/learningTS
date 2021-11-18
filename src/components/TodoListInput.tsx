@@ -1,6 +1,7 @@
 import React,{PureComponent} from 'react';
 import styled from 'styled-components';
 import { HiChatAlt } from 'react-icons/hi'
+import { connect } from 'react-redux';
 
 const InputContainer = styled.div`
     background-color:#e9ecef;
@@ -45,8 +46,11 @@ class TodoListInput extends React.Component<ItemProps,ItemState> {
     //     ){  return false }
     //     return true;
     // }
+    componentDidUpdate(prevProps:ItemProps, prevState:ItemState){
+        // if(prevProps.todolist === this.props.todolist){}
+    }
     state = {
-        inputValue: "테스트 입력값 입니다. 테스트 입력값 입니다. 테스트 입력값 입니다. 테스트 입력값 입니다.",
+        inputValue: "",
     }
 
     todoInput = React.createRef<HTMLInputElement>();
@@ -95,4 +99,19 @@ class TodoListInput extends React.Component<ItemProps,ItemState> {
     }
 }
 
-export default TodoListInput;
+const mapStateToProps = (state: any) => {
+    return {
+        todolist: state.todolist,
+    }
+}
+
+const dispatcher = (dispatcher: any) => {
+    return {
+        addTodo: (title: string) => dispatcher({
+            type: 'addTodo',
+            payload: title,
+        }),
+    }
+}
+
+export default connect(mapStateToProps, dispatcher)(TodoListInput);
