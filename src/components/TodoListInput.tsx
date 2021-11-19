@@ -1,4 +1,4 @@
-import React,{PureComponent} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { HiChatAlt } from 'react-icons/hi'
 import { connect } from 'react-redux';
@@ -38,17 +38,8 @@ interface ItemState {
     inputValue : string
 }
 class TodoListInput extends React.Component<ItemProps,ItemState> {
-    // shouldComponentUpdate(prevProps:ItemProps, prevState:ItemState){
-    //     if(
-    //         prevState.inputValue === this.state.inputValue 
-    //         && prevProps.todolist === this.props.todolist
-    //         && prevProps.addTodo === this.props.addTodo
-    //     ){  return false }
-    //     return true;
-    // }
-    componentDidUpdate(prevProps:ItemProps, prevState:ItemState){
-        // if(prevProps.todolist === this.props.todolist){}
-    }
+
+
     state = {
         inputValue: "",
     }
@@ -105,13 +96,13 @@ const mapStateToProps = (state: any) => {
     }
 }
 
-const dispatcher = (dispatcher: any) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
-        addTodo: (title: string) => dispatcher({
+        addTodo: (title: string) => dispatch({
             type: 'addTodo',
             payload: title,
         }),
     }
 }
 
-export default connect(mapStateToProps, dispatcher)(TodoListInput);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoListInput);

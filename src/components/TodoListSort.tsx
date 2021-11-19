@@ -1,17 +1,17 @@
-import React,{PureComponent} from 'react'
+import React from 'react'
+import { connect } from 'react-redux';
 import styles from './style.module.scss';
 interface TodoProps{
-    onChangeSelect(typeValue:string) :void ,
+    sortTodo(typeValue:string) :void ,
 }
 
 class TodoListSort extends React.Component<TodoProps>{
 
 
     render(){
-        const {onChangeSelect} = this.props;
         return(
             <div id={styles['sort-select']}>
-                <select name="sorting" onChange={(e)=>onChangeSelect(e.target.value)}>
+                <select name="sorting" onChange={(e)=>this.props.sortTodo(e.target.value)}>
                     <option value="inputOrder">입력순</option>
                     <option value="ascending">오름차순</option>
                     <option value="descending">내림차순</option>
@@ -21,5 +21,17 @@ class TodoListSort extends React.Component<TodoProps>{
         )
     }
 }
+const mapStateToProps = () => {
+    return{
 
-export default TodoListSort;
+    }
+}
+const dispatcher = (dispatcher: any) => {
+    return {
+        sortTodo: (typeValue:string) => dispatcher({
+            type: 'sortTodo',
+            payload: typeValue,
+        }),
+    }
+}
+export default connect(mapStateToProps, dispatcher) (TodoListSort);

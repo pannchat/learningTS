@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components'
 import { textSpanIntersectsWithPosition } from 'typescript';
 import TodoItem from './TodoListItem';
 import styles from './style.module.scss'
+import { connect } from 'react-redux';
 
 interface ItemProps {
     todolist: {
@@ -10,10 +11,6 @@ interface ItemProps {
         title: string,
         check: boolean,
     }[],
-    onToggle(id: string): void,
-    onRemove(id: string): void,
-    onSwapItem(start: string, end: string): void,
-    handleItemUpdate(todo:object): void
     
 }
 
@@ -31,26 +28,14 @@ const TodoListContainer = styled.div`
     max-width: 500px;
 `;
 class TodoList extends React.Component<ItemProps>{
-    // componentDidUpdate(){
-    //     console.log("Update")
-    // }
-    // shouldComponentUpdate(prevProps:ItemProps){
-    //     if (prevProps.todolist === this.props.todolist) return false;
-    //     return true;
-    // }
+
     render() {
-        
+        console.log('test11 TodoList', this.props.todolist)
         return (
             <TodoListContainer>
                 {this.props.todolist.length !== 0
                 ? this.props.todolist.map(item => (
-                    <TodoItem key={item.id}
-                        todoItem={item}
-                        onToggle={this.props.onToggle}
-                        onRemove={this.props.onRemove}
-                        onSwapItem={this.props.onSwapItem}
-                        handleItemUpdate={this.props.handleItemUpdate}
-                    />
+                    <TodoItem key={item.id} todoItem={item}/>
                 ))
                 : (<EmptyTodolist>
                     오늘 할 일을 추가해보세요.
@@ -60,6 +45,10 @@ class TodoList extends React.Component<ItemProps>{
         )
     }
 }
+const mapStateToProps = (state: any) => {
+    return {
+        todolist: state.todoList,
+    }
+}
 
-
-export default TodoList;
+export default connect(mapStateToProps) (TodoList);

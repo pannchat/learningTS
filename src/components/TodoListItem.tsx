@@ -1,9 +1,9 @@
-import React,{PureComponent} from 'react';
+import React from 'react';
 import styled from 'styled-components'
 import { HiBadgeCheck, HiOutlineBadgeCheck, HiTrash,HiPencil, HiXCircle } from 'react-icons/hi'
 
 import TodoListTooltip from './TodoListTooltip'
-import styles from './style.module.scss'
+import {connect} from 'react-redux'
 
 const RemoveBtn = styled.div`
     opacity:0.2;
@@ -55,20 +55,19 @@ interface ItemProps {
         title: string,
         check: boolean,
     },
-    onToggle(id: string): void,
-    onRemove(id: string): void,
-    onSwapItem(start: string, end: string): void,
-    handleItemUpdate(todo:object): void,
+    removeTodo(id:string):void,
+    toggleTodo(id:string):void,
+    updateTodo(todo: {id:string, title:string, check:boolean}):void,
+    swapItemTodo(swapItem:{start:string, end:string}):void,
+
 }
-interface ItemState{
-    editMode : boolean,
-    editText : string
-}
-class TodoListItem extends React.Component<ItemProps, ItemState> {
-    // shouldComponentUpdate(prevProps:ItemProps){
-    //     if (prevProps.todoItem.check === this.props.todoItem.check) return false;
-    //     return true;
-    // }
+// interface ItemState{
+//     editMode : boolean,
+//     editText : string
+// }
+// ItemProps, ItemState
+class TodoListItem extends React.Component<ItemProps> {
+ 
     state={
         editMode:false,
         editText : this.props.todoItem.title,
@@ -81,10 +80,10 @@ class TodoListItem extends React.Component<ItemProps, ItemState> {
     }
 
     handleClickToggleButton = () => {
-        this.props.onToggle(this.props.todoItem.id)
+        this.props.toggleTodo(this.props.todoItem.id)
     }
     handleClickRemoveButton = () =>{
-        this.props.onRemove(this.props.todoItem.id)
+        this.props.removeTodo(this.props.todoItem.id)
     }
     handleChangeEditInput = (targetValue:string) =>{
         this.setState({
@@ -94,7 +93,7 @@ class TodoListItem extends React.Component<ItemProps, ItemState> {
     handleClickUpdate = () => {
         const {id,check} = this.props.todoItem;
         const editTodoItem = {id:id, title:this.state.editText, check:check}
-        this.props.handleItemUpdate(editTodoItem)
+        this.props.updateTodo(editTodoItem)
         this.setState({
             editMode : false,
         })
@@ -124,9 +123,10 @@ class TodoListItem extends React.Component<ItemProps, ItemState> {
                     onDragStart={this.handleItemDragStart}
                     onDragOver={this.handleItemDragOver}
                     onDrop={(e) => {
-                        this.props.onSwapItem(
-                            e.dataTransfer.getData('dragItemId'),
-                            this.props.todoItem.id
+                        const startItem = e.dataTransfer.getData('dragItemId')
+                        const endItem = this.props.todoItem.id
+                        this.props.swapItemTodo(
+                            {start:startItem, end:endItem}
                         )
                     }}
                     draggable
@@ -183,5 +183,29 @@ class TodoListItem extends React.Component<ItemProps, ItemState> {
         )
     }
 }
+const mapStateToProps = (state: any) => {
+    return {
 
-export default TodoListItem;
+    }
+}
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        removeTodo: (id: string) => dispatch({
+            type: 'removeTodo',
+            payload: id,
+        }),
+        toggleTodo: (id: string) => dispatch({
+            type: 'toggleTodo',
+            payload: id,
+        }),
+        updateTodo: (todo: {id:string, title:string, check:false}) => dispatch({
+            type: 'updateTodo',
+            payload: todo,
+        }),
+        swapItemTodo: (swapItem : {start:string, end:string}) => dispatch({
+            type: 'swapItemTodo',
+            payload: swapItem,
+        })
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps) (TodoListItem);

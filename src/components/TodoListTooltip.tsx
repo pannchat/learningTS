@@ -40,16 +40,6 @@ interface ItemState{
     onMouseCheck:boolean
 }
 class TodoListTooltip extends React.Component<ItemProps,ItemState>{
-    shouldComponentUpdate(prevProps:ItemProps, prevState:ItemState){
-        if(
-            prevProps.TooltipContent === this.props.TooltipContent
-            && prevState.onMouseCheck === this.state.onMouseCheck
-        ) return false;
-        else return true;
-    }
-    componentDidUpdate(){
-        // console.log("tooltip")
-    }
     state={
         onMouseCheck:false
     }

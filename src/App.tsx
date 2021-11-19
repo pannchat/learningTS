@@ -5,6 +5,8 @@ import Header from './components/Header'
 import styled from 'styled-components'
 import TodoListSort from './components/TodoListSort'
 import { v4 as uuidv4 } from 'uuid';
+import {connect, Provider} from 'react-redux';
+import {createStore} from 'redux'
 
 const MainContainer = styled.div`
     display:flex;
@@ -34,12 +36,12 @@ enum SortType {
     'importance' = 'importance'
 }
 
-class App extends React.Component<{}, TodoState>{
-    state: TodoState = {
-        todoList: [],
-    };
+class App extends React.Component<TodoState>{
+    // state: TodoState = {
+    //     todoList: [],
+    // };
 
-    componentDidMount() {
+    componentDidUpdate() {
         // const data = [];
         // for (let index = 0; index < 2000; index++) {
         //     data.push({
@@ -55,7 +57,7 @@ class App extends React.Component<{}, TodoState>{
     }
 
     handleToggle = (id: string) => {
-        const { todoList } = this.state;
+        const { todoList } = this.props;
         this.setState({
             todoList: todoList.map(item => item.id === id ? 
                 { 
@@ -67,14 +69,14 @@ class App extends React.Component<{}, TodoState>{
     }
 
     handleRemove = (id: string) => {
-        const { todoList } = this.state;
+        const { todoList } = this.props;
         this.setState({
             todoList: todoList.filter(item => item.id !== id),
         })
     }
 
     handleAddTodo = (title: string) => {
-        const { todoList } = this.state;
+        const { todoList } = this.props;
         const newTodo = {
             id: uuidv4(),  
             title: title, 
@@ -87,7 +89,8 @@ class App extends React.Component<{}, TodoState>{
     }
 
     handleChangeSelect = (typeValue: SortType) => {
-        const { todoList } = this.state;
+        console.log("호출은됨")
+        const { todoList } = this.props;
         switch (typeValue) {
             case SortType.ascending:
                 this.setState({
@@ -121,11 +124,11 @@ class App extends React.Component<{}, TodoState>{
     }
 
     handleSwapItem = (start: string, end: string) => {
-        const startItem = this.state.todoList.filter((item) => {
+        const startItem = this.props.todoList.filter((item) => {
             return item.id === start;
         })
 
-        const endItem = this.state.todoList.filter((item) => {
+        const endItem = this.props.todoList.filter((item) => {
             return item.id === end;
         })
 
@@ -134,7 +137,7 @@ class App extends React.Component<{}, TodoState>{
         }
 
         this.setState({
-            todoList: this.state.todoList.map((item) => {
+            todoList: this.props.todoList.map((item) => {
                 if (start === item.id) {
                     return endItem[0];
                 } else if (end === item.id) {
@@ -145,28 +148,28 @@ class App extends React.Component<{}, TodoState>{
             })
         });
     }
+    handleItemUpdate = (todo: {id:string, title:string, check:false}) =>{
 
+        this.setState({
+            todoList: this.props.todoList.map(item => {
+                return item.id === todo.id ? todo : item;
+            })
+        })
+        
+    }
     render() {
-        const doneCount = this.state.todoList.filter(item => item.check).length;
+        console.log('test11 App', this.props)
+        
         return (
             <>  
 
                 <MainContainer>
                     <SubContainer>
-                        <Header
-                            total={this.state.todoList.length}
-                            doneCount={doneCount} />
-                        <TodoListSort onChangeSelect={this.handleChangeSelect} />
-                        <TodoList todolist={this.state.todoList}
-                            onRemove={this.handleRemove}
-                            onToggle={this.handleToggle}
-                            onSwapItem={this.handleSwapItem}
-                        />
+                        <Header />
+                        <TodoListSort/>
+                        <TodoList/>
                 
-                        <TodoListInput 
-                            todolist={this.state.todoList} 
-                            addTodo={this.handleAddTodo}
-                        />
+                        <TodoListInput/>
 
                     </SubContainer>
                 </MainContainer>
@@ -175,5 +178,11 @@ class App extends React.Component<{}, TodoState>{
     }
 }
 
-export default App;
+const mapStateToProps = (state: any) => {
+    return {
+        todoList: state.todoList
+    }
+}
+
+export default connect(mapStateToProps)(App);
 

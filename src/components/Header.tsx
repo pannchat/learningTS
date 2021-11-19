@@ -1,8 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components'
 interface todoProps {
-    total: number,
-    doneCount: number
+    todolist: {
+        id: string,
+        title: string,
+        check: boolean,
+    }[],
 }
 // interface todoState {
 //     count: number
@@ -26,9 +30,11 @@ const Total = styled.div`
 class Header extends React.Component<todoProps> {
 
     render() {
+        const total = this.props.todolist.length;
+        const doneCount = this.props.todolist.filter(item => item.check).length;
         return (
             <>
-                <Total>total : {this.props.total}/<b>{this.props.doneCount}</b></Total>
+                <Total>total : {total}/<b>{doneCount}</b></Total>
                 <HeadCotainer>
                     TodoList
                 </HeadCotainer>
@@ -36,5 +42,9 @@ class Header extends React.Component<todoProps> {
         )
     }
 }
-
-export default Header;
+const mapStateToProps = (state: any) => {
+    return{
+        todolist: state.todoList
+    }
+} 
+export default connect(mapStateToProps) (Header);
