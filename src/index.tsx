@@ -122,12 +122,6 @@ const reducer = (state = initialState, action: any) => {
         return a.check < b.check ? -1 : a.check > b.check ? 1 : 0;
         })]
       }
-    }else if (action.payload === SortType.inputOrder){
-      return{
-        todoList: [...state.todoList.sort((a, b) => {
-          return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-        })]
-      }
     }
   }
     return state;

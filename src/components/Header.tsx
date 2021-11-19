@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components'
+
 interface todoProps {
     todolist: {
         id: string,
@@ -8,18 +9,17 @@ interface todoProps {
         check: boolean,
     }[],
 }
-// interface todoState {
-//     count: number
-// }
+
 const HeadCotainer = styled.div`
-    background-color:#e9ecef;
-    border:solid 1px #ced4da;
-    padding:10px;
+
+    border-bottom:solid 2px black;
+
     border-radius:10px 10px 0 0;
-    color:#1098ad;
+    color:black;
     font-size:20pt;
     font-weight:bold;
 `;
+
 const Total = styled.div`
     display:flex;
     justify-content:end;
@@ -27,6 +27,7 @@ const Total = styled.div`
         color:#1098ad;to
     }
 `;
+
 class Header extends React.Component<todoProps> {
 
     render() {
@@ -42,9 +43,11 @@ class Header extends React.Component<todoProps> {
         )
     }
 }
+
 const mapStateToProps = (state: any) => {
     return{
         todolist: state.todoList
     }
 } 
+
 export default connect(mapStateToProps) (Header);

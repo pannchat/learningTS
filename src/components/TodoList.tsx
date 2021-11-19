@@ -17,7 +17,7 @@ interface ItemProps {
 const EmptyTodolist = styled.div`
     display:flex;
     width:100%;
-    height:300px;
+    height:100%;
     justify-content:center;
     align-items:center;
     color:#aaa;
@@ -25,6 +25,7 @@ const EmptyTodolist = styled.div`
 `;
 const TodoListContainer = styled.div`
     width:100%;
+    height:100%;
     max-width: 500px;
 `;
 class TodoList extends React.Component<ItemProps>{

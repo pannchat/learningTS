@@ -39,11 +39,9 @@ interface ItemState {
 }
 class TodoListInput extends React.Component<ItemProps,ItemState> {
 
-
     state = {
         inputValue: "",
     }
-
     todoInput = React.createRef<HTMLInputElement>();
 
     addItem = () => {

@@ -11,10 +11,13 @@ import {createStore} from 'redux'
 const MainContainer = styled.div`
     display:flex;
     justify-content:center;
+
 `;
 
 const SubContainer = styled.div`
-    width:500px;
+    width:300px;
+    height:80vh;
+    background-color:#fcc419;
     display:flex;
     flex-direction:column;
     padding:10px;
@@ -35,134 +38,39 @@ enum SortType {
     'descending' = 'descending',
     'importance' = 'importance'
 }
+const Division = styled.div`
+    display:flex;
+    justify-content:center;
+    align-items:center;
+`;
+const LeftSide = styled.div`
+    width:100%;
+    height:80vh;
 
+    &>div{
+        font-size:90px;
+        display: table-cell;
+        // vertical-align: top;
+        // height:90px;
+        // line-height:50px;
+        writing-mode: vertical-lr
+    }
+`;
+const RightSide = styled.div`
+    width:100%;
+    height:80vh;
+`;
 class App extends React.Component<TodoState>{
-    // state: TodoState = {
-    //     todoList: [],
-    // };
 
-    componentDidUpdate() {
-        // const data = [];
-        // for (let index = 0; index < 2000; index++) {
-        //     data.push({
-        //         id: uuidv4(),
-        //         title: 'test' + index.toString(),
-        //         check: false,
-        //     })
-        // }
-
-        // this.setState({
-        //     todoList: data
-        // })
-    }
-
-    handleToggle = (id: string) => {
-        const { todoList } = this.props;
-        this.setState({
-            todoList: todoList.map(item => item.id === id ? 
-                { 
-                    ...item, 
-                    check: !item.check 
-                } : item
-            )
-        })
-    }
-
-    handleRemove = (id: string) => {
-        const { todoList } = this.props;
-        this.setState({
-            todoList: todoList.filter(item => item.id !== id),
-        })
-    }
-
-    handleAddTodo = (title: string) => {
-        const { todoList } = this.props;
-        const newTodo = {
-            id: uuidv4(),  
-            title: title, 
-            check: false 
-        };
-
-        this.setState({
-            todoList: todoList.concat(newTodo),
-        })
-    }
-
-    handleChangeSelect = (typeValue: SortType) => {
-        console.log("호출은됨")
-        const { todoList } = this.props;
-        switch (typeValue) {
-            case SortType.ascending:
-                this.setState({
-                    todoList: todoList.sort((a, b) => {
-                        return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
-                    })
-                })
-                break;
-            case SortType.descending:
-                this.setState({
-                    todoList: todoList.sort((a, b) => {
-                        return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
-                    })
-                })
-                break;
-            case SortType.importance:
-                this.setState({
-                    todoList: todoList.sort((a, b) => {
-                        return a.check < b.check ? -1 : a.check > b.check ? 1 : 0;
-                    })
-                })
-                break;
-            case SortType.inputOrder:
-                this.setState({
-                    todoList: todoList.sort((a, b) => {
-                        return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-                    })
-                })
-                break;
-        }
-    }
-
-    handleSwapItem = (start: string, end: string) => {
-        const startItem = this.props.todoList.filter((item) => {
-            return item.id === start;
-        })
-
-        const endItem = this.props.todoList.filter((item) => {
-            return item.id === end;
-        })
-
-        if(startItem.length !== 1 || endItem.length !== 1) {
-            throw new Error('잘못된 값이 입력됨');
-        }
-
-        this.setState({
-            todoList: this.props.todoList.map((item) => {
-                if (start === item.id) {
-                    return endItem[0];
-                } else if (end === item.id) {
-                    return startItem[0];
-                }
-
-                return item;
-            })
-        });
-    }
-    handleItemUpdate = (todo: {id:string, title:string, check:false}) =>{
-
-        this.setState({
-            todoList: this.props.todoList.map(item => {
-                return item.id === todo.id ? todo : item;
-            })
-        })
-        
-    }
     render() {
-        console.log('test11 App', this.props)
-        
         return (
-            <>  
-
+            <Division>  
+                <LeftSide>
+                    <div>2021
+                        <div>11</div>
+                    </div>
+                </LeftSide>
+                
                 <MainContainer>
                     <SubContainer>
                         <Header />
@@ -173,7 +81,11 @@ class App extends React.Component<TodoState>{
 
                     </SubContainer>
                 </MainContainer>
-            </>
+
+                <RightSide>
+                    test
+                </RightSide>
+            </Division>
         );
     }
 }
